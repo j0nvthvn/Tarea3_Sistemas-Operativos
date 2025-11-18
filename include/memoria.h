@@ -8,19 +8,31 @@
 #include <time.h>
 #include <stdbool.h>
 
-typedef struct {
+typedef struct SistemaMemoria SistemaMemoria;
+typedef struct Pagina Pagina;
+
+SistemaMemoria* inicializar_sistema(int ram_mb, int tam_pagina_mb);
+void liberar_sistema(SistemaMemoria* sistema);
+void mostrar_estado_memoria(SistemaMemoria* sistema);
+int asignar_frame_ram(SistemaMemoria* sistema, Pagina* pag);
+int asignar_frame_swap(SistemaMemoria* sistema, Pagina* pag);
+void liberar_memoria_ram(SistemaMemoria* sistema, int frame);
+void liberar_memoria_swap(SistemaMemoria* sistema, Pagina* pag);
+
+/* Definiciones de las estructuras con nombre para no chocar con las forward declarations */
+struct Pagina {
     int id_proceso;       // <- ¿De qué proceso es?
     int numero_pagina;    // <- ¿Qué página del proceso es?
     bool en_memoria_ram;  // <- ¿Está en RAM o en SWAP?
-    int frame;            // <- ¿En que frame está? (NO aplica para SWAP, en
+    int frame;            // <- ¿En qué frame está? (no aplica para SWAP, en
                           //                        ese caso frame = -1)
     time_t ultimo_acceso; // <- Para LRU
-} Pagina;
+};
 
-typedef struct {
-    int tamanio_ram;
-    int tamanio_pagina;
-    int tamanio_swap;
+struct SistemaMemoria {
+    int tamaño_ram;
+    int tamaño_pagina;
+    int tamaño_swap;
 
     // Frames
     int num_frames_swap;
@@ -32,6 +44,6 @@ typedef struct {
 
     int frames_libres_ram;
     int frames_libres_swap;
-} SistemaMemoria;
+};
 
 #endif //MEMORIA_H

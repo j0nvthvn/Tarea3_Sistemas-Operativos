@@ -7,13 +7,19 @@
 
 #include <stdbool.h>
 
-typedef struct {
+typedef struct Proceso Proceso;
+
+Proceso* crear_proceso(int id, int tam_min, int tam_max, int tam_pagina);
+void liberar_proceso(Proceso* proc);
+void mostrar_proceso(Proceso* proc);
+
+struct Proceso {
     int id;
-    int tamanio;      // Tamaño en Kb
+    int tamano;      // Tamaño en Kb
     int num_paginas;  // ¿Cuántas páginas necesita?
     int *paginas_ids; // Referencias a sus páginas
     bool activo;      // ¿Está ejecutándose?
 
-} Proceso;
+};
 
 #endif //PROCESO_H
